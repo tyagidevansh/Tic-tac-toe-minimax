@@ -1,0 +1,23 @@
+1. Title gets put on screen
+2. Status is displayed
+3. Status is a variable which first checks if there is a winner
+    (does not call a function, just checks if another variable winner === null)
+4. 3 divs get created, each div has a row of 3 buttons
+5. Each button (custom react component square) is assigned a value from an array called squares. The 
+    button then calls a function onSquareClick and and that in turn calls a function handleClick.
+6. This means that by default, the button displays the value which is in the array at the specified
+    idex. When the user clicks the button onSquareClick is called and handleClick is called.
+7. HanddleClick takes a parameter i (index of the buttton in the array). first it checks if there is a 
+    value at squares[i]. Then it calls calculateWinner on the squares array. If there is an element at 
+    squares[i] or there is a winner, the function returns.
+8. Otherwise, it creates a new array called nextSquares and copies the squares array into it using the 
+    slice() function. The line "nextSquares[i] = isXnext ? 'X' : 'O';" checks if X is the next value or not.
+    isXnext is a state which gets its intial value randomly from Math. 
+9.Handleclick sets the state if square to nextsquares and flips the value of isXnext.
+10.It sets the state of winner (if winner exists) and sets showPopup to true.
+11. If winner exists, Popup gets called from a seperate file. Popup takes three props: the value of the winner,
+    onClose (calls the handlePopupClose function) and onPlayAgain (calls the onPlayAgain function).
+12. handlePopupClose is called when user clicks the close button on the modal and simply sets showPopup to false.
+13. handlePlayAgain is called when user clicks play again and it sets all the elements of the squares array to null.
+    It also setisXnext to true (idk why really, should prob remove it), sets Winner to null and sets showPopup to false.
+Now to handle the Ai moves,

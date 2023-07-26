@@ -11,7 +11,7 @@ function Square({ value, onSquareClick }) {
 }
 
 export default function Board() {
-  const [isXnext, setisXnext] = useState(Math.random() < 0.5);
+  const [isXnext, setisXnext] = useState(true); //X is always the first player coz game logic ting, it only checks to make a move once a button has been clicking meaning if O is the first player no moves happen and honestly i cant be bothered with changing the entire game logic just so the fucking first move can be randomized i hate minimax
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [showPopup, setShowPopup] = useState(false);
   const [winner, setWinner] = useState(null);
@@ -41,23 +41,100 @@ export default function Board() {
   }
   }
     if (nullcount === 0){
-  return ("It's a draw!");
+  return ("Its a draw!");
   }
 
     return null;
   }
 
+  function randomMove(squares) {
+    for (let i = 0; i < squares.length; i++) {
+      if (squares[i] === null) {
+        const nextSquares = squares.slice(); // Make a copy of the squares array
+        nextSquares[i] = 'O'; // Modify the copy of the array
+        setSquares(nextSquares); // Update the state with the new array
+        return;
+      }
+    }
+  }
   
+  function bestMove(squares){
+    let bestScore = -Infinity
+    let move;
+    console.log(squares)
+    for (let i = 0; i < squares.length; i++) {
+      if (squares[i] === null){
+        const nextSquares = squares.slice(); // Make a copy of the squares array
+            nextSquares[i] = 'O'; 
+            let score = minimax(nextSquares,0, true); 
+            if (score > bestScore){
+              bestScore = score;
+              move = i; 
+            }
+      }
+    }
+    const nextnextSquares = squares.slice();
+    nextnextSquares[move] = 'O';
+    setSquares(nextnextSquares); // Update the state with the new array
+
+  }
+
+  let scores = {
+    'X wins!':-1,
+    'O wins!': 1,
+    'Its a draw' : 0
+  }
+
+  function minimax(squares, depth, isMaximixing){
+    let result = calculateWinner(squares);
+    if (result != null){
+      let score = scores[result];
+      return score;
+    }
+
+    if (isMaximixing){
+      let bestScore = -Infinity;
+      for (let i = 0; i < squares.length; i++){
+        if (squares[i]= null){
+          const nextSquares = squares.slice();
+          nextSquares[i] = 'O';
+          let score = minimax(squares, depth+1,false);
+          bestScore = max(score, bestScore)
+          }
+        }
+        return bestScore;
+      }
+      
+    else {
+      let bestScore = Infinity;
+      for (let i = 0; i < squares.length; i++){
+        if (squares[i]= null){
+          const nextSquares = squares.slice();
+          nextSquares[i] = 'X';
+          let score = minimax(squares, depth+1,true);
+          bestScore= min(score, bestScore);
+        }
+      }
+      return bestScore;
+    }
+  }
 
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) {
       return;
     }
-
+  
     const nextSquares = squares.slice();
-    nextSquares[i] = isXnext ? 'X' : 'O';
+  
+    if (isXnext) {
+      nextSquares[i] = 'X';
+    }
+
+    
     setSquares(nextSquares);
-    setisXnext(!isXnext);
+    setisXnext(false);
+    bestMove(nextSquares); 
+    setisXnext(true);
 
     const calculatedWinner = calculateWinner(nextSquares);
     if (calculatedWinner) {
