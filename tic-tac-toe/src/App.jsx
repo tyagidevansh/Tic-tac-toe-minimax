@@ -11,7 +11,7 @@ function Square({ value, onSquareClick }) {
 }
 
 export default function Board() {
-  const [isXnext, setisXnext] = useState(true); //X is always the first player coz game logic ting, it only checks to make a move once a button has been clicking meaning if O is the first player no moves happen and honestly i cant be bothered with changing the entire game logic just so the fucking first move can be randomized i hate minimax
+  const [isXnext, setisXnext] = useState(true);
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [showPopup, setShowPopup] = useState(false);
   const [winner, setWinner] = useState(null);
@@ -31,88 +31,86 @@ export default function Board() {
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return (squares[a]+ " wins!");
+        return squares[a] + " wins!";
       }
     }
-  let nullcount = 0;
+
+    let nullcount = 0;
     for (let i = 0; i < squares.length; i++) {
-      if (squares[i] === null){
-      nullcount++;
-  }
-  }
-    if (nullcount === 0){
-  return ("Its a draw!");
-  }
+      if (squares[i] === null) {
+        nullcount++;
+      }
+    }
+    if (nullcount === 0) {
+      return "It's a draw!";
+    }
 
     return null;
   }
 
-  function randomMove(squares) {
+  // function randomMove(squares) {
+  //   for (let i = 0; i < squares.length; i++) {
+  //     if (squares[i] === null) {
+  //       const nextSquares = squares.slice(); // Make a copy of the squares array
+  //       nextSquares[i] = 'O'; // Modify the copy of the array
+  //       setSquares(nextSquares); // Update the state with the new array
+  //       return;
+  //     }
+  //   }
+  // }
+
+  function bestMove(squares) {
+    let bestScore = -Infinity;
+    let move;
+    console.log(squares);
     for (let i = 0; i < squares.length; i++) {
       if (squares[i] === null) {
         const nextSquares = squares.slice(); // Make a copy of the squares array
-        nextSquares[i] = 'O'; // Modify the copy of the array
-        setSquares(nextSquares); // Update the state with the new array
-        return;
-      }
-    }
-  }
-  
-  function bestMove(squares){
-    let bestScore = -Infinity
-    let move;
-    console.log(squares)
-    for (let i = 0; i < squares.length; i++) {
-      if (squares[i] === null){
-        const nextSquares = squares.slice(); // Make a copy of the squares array
-            nextSquares[i] = 'O'; 
-            let score = minimax(nextSquares,0, true); 
-            if (score > bestScore){
-              bestScore = score;
-              move = i; 
-            }
+        nextSquares[i] = 'O';
+        let score = minimax(nextSquares, 0, false);
+        if (score > bestScore) {
+          bestScore = score;
+          move = i;
+        }
       }
     }
     const nextnextSquares = squares.slice();
     nextnextSquares[move] = 'O';
     setSquares(nextnextSquares); // Update the state with the new array
-
   }
 
   let scores = {
-    'X wins!':-1,
+    'X wins!': -1,
     'O wins!': 1,
-    'Its a draw' : 0
-  }
+    "It's a draw!": 0
+  };
 
-  function minimax(squares, depth, isMaximixing){
+  function minimax(squares, depth, isMaximizing) {
     let result = calculateWinner(squares);
-    if (result != null){
+    if (result != null) {
       let score = scores[result];
       return score;
     }
 
-    if (isMaximixing){
+    if (isMaximizing) {
       let bestScore = -Infinity;
-      for (let i = 0; i < squares.length; i++){
-        if (squares[i]= null){
+      for (let i = 0; i < squares.length; i++) {
+        if (squares[i] === null) {
           const nextSquares = squares.slice();
           nextSquares[i] = 'O';
-          let score = minimax(squares, depth+1,false);
-          bestScore = max(score, bestScore)
-          }
+          let score = minimax(nextSquares, depth + 1, false);
+          bestScore = Math.max(score, bestScore);
         }
-        return bestScore;
       }
-      
-    else {
+      return bestScore;
+    } else {
       let bestScore = Infinity;
-      for (let i = 0; i < squares.length; i++){
-        if (squares[i]= null){
+      for (let i = 0; i < squares.length; i++) {
+        if (squares[i] === null) {
           const nextSquares = squares.slice();
           nextSquares[i] = 'X';
-          let score = minimax(squares, depth+1,true);
-          bestScore= min(score, bestScore);
+          let score = minimax(nextSquares, depth + 1, true);
+          bestScore = Math.min(score, bestScore);
         }
       }
       return bestScore;
@@ -123,17 +121,16 @@ export default function Board() {
     if (squares[i] || calculateWinner(squares)) {
       return;
     }
-  
+
     const nextSquares = squares.slice();
-  
+
     if (isXnext) {
       nextSquares[i] = 'X';
     }
 
-    
     setSquares(nextSquares);
     setisXnext(false);
-    bestMove(nextSquares); 
+    bestMove(nextSquares);
     setisXnext(true);
 
     const calculatedWinner = calculateWinner(nextSquares);
@@ -189,4 +186,4 @@ export default function Board() {
       )}
     </>
   );
-      }
+}
