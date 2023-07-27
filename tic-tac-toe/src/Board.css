@@ -1,0 +1,64 @@
+/* Apply a grey background to the whole board */
+/* Board.css */
+:root body {
+    background-color: #1a1919fb;
+  }
+  
+  
+  /* Add rounded corners to the squares */
+  .square {
+    border-radius: 8px;
+  }
+  
+  /* Make the squares black */
+  .square {
+    background-color: #000;
+    color: #ffffff; /* Optional: Change the text color to white for better visibility */
+  }
+  
+  /* Optional: Add some spacing and center the content */
+  .board-row {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .status {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  h1 {
+    color: #ffffff;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+  
+  /* Navbar.css */
+
+/* Navbarcomp.css */
+
+.custom-navbar {
+    margin: 0;
+    padding: 0;
+  }
+
+h1{
+    color: #ffffff;
+}
+
+h2{
+    color: #ffffff;
+}
+button.active {
+    background-color: rgb(18, 18, 20);
+    color: white;
+  }
+  
+  /* Styles for the inactive button */
+  button.inactive {
+    background-color: white;
+    color: black;
+  }
+  

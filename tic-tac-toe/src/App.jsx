@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import './App.css';
 import Popup from './Popup';
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './Board.css';
 
 function Square({ value, onSquareClick }) {
   return (
@@ -15,6 +17,7 @@ export default function Board() {
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [showPopup, setShowPopup] = useState(false);
   const [winner, setWinner] = useState(null);
+  const [isComputer, setIsComputer] = useState(true);
 
   function calculateWinner(squares) {
     const lines = [
@@ -76,7 +79,12 @@ export default function Board() {
     }
     const nextnextSquares = squares.slice();
     nextnextSquares[move] = 'O';
-    setSquares(nextnextSquares); // Update the state with the new array
+    setSquares(nextnextSquares);
+    const calculatedWinner = calculateWinner(nextnextSquares);
+    if (calculatedWinner) {
+      setWinner(calculatedWinner);
+      setShowPopup(true);
+    }
   }
 
   let scores = {
@@ -128,10 +136,21 @@ export default function Board() {
       nextSquares[i] = 'X';
     }
 
-    setSquares(nextSquares);
-    setisXnext(false);
-    bestMove(nextSquares);
-    setisXnext(true);
+    
+
+    if (isComputer === true){
+      setSquares(nextSquares);
+      setisXnext(false);
+      bestMove(nextSquares);
+      setisXnext(true);
+    }
+    else{
+      const nextSquares = squares.slice();
+      nextSquares[i] = isXnext ? 'X' : 'O';
+      setSquares(nextSquares);
+      setisXnext(!isXnext);
+    }
+      
 
     const calculatedWinner = calculateWinner(nextSquares);
     if (calculatedWinner) {
@@ -155,7 +174,7 @@ export default function Board() {
   if (winner) {
     status = winner;
   } else {
-    status = 'Next player: ' + (isXnext ? 'X' : 'O');
+    status = 'You play as X!';
   }
 
   return (
@@ -184,6 +203,11 @@ export default function Board() {
           onPlayAgain={handlePlayAgain}
         />
       )}
+      <div className='useButtons'>
+        <button type="button" className={`btn btn-light ${isComputer ? 'inactive' : 'active'}`} onClick = {() => setIsComputer(false)}>vs Human</button>
+        <button type="button" className={`btn btn-light ${isComputer ? 'active' : 'inactive'}`} style={{ marginLeft: '10px' }} onClick = {()=> setIsComputer(true)}>vs Computer</button>
+      </div>
+      
     </>
   );
 }
