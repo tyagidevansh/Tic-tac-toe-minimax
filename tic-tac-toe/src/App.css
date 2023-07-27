@@ -73,3 +73,21 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
+.toggle-btn {
+  position: relative;
+  right: 0%;
+  top: 550px;
+  background-color: #ffffff;
+  color: #000;
+  border: none;
+  border-radius: 15px;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.toggle-btn.dark {
+  background-color: #000;
+  color: #ffffff;
+}

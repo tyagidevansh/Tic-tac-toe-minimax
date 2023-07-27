@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Popup from './Popup';
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './Board.css';
+import './DarkMode.css';
 
 function Square({ value, onSquareClick }) {
   return (
@@ -18,6 +18,7 @@ export default function Board() {
   const [showPopup, setShowPopup] = useState(false);
   const [winner, setWinner] = useState(null);
   const [isComputer, setIsComputer] = useState(true);
+  const [darkMode, setDarkMode] = useState(true);
 
   function calculateWinner(squares) {
     const lines = [
@@ -50,17 +51,6 @@ export default function Board() {
 
     return null;
   }
-
-  // function randomMove(squares) {
-  //   for (let i = 0; i < squares.length; i++) {
-  //     if (squares[i] === null) {
-  //       const nextSquares = squares.slice(); // Make a copy of the squares array
-  //       nextSquares[i] = 'O'; // Modify the copy of the array
-  //       setSquares(nextSquares); // Update the state with the new array
-  //       return;
-  //     }
-  //   }
-  // }
 
   function bestMove(squares) {
     let bestScore = -Infinity;
@@ -170,15 +160,38 @@ export default function Board() {
     setShowPopup(false);
   }
 
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [darkMode]);
+
+  // Function to toggle dark mode
+  function toggleDarkMode() {
+    setDarkMode(prevDarkMode => !prevDarkMode); // Toggle the darkMode state
+  }
+
   let status;
   if (winner) {
     status = winner;
   } else {
-    status = 'You play as X!';
+    if (isComputer === true){
+      status = 'You play as X!';
+    }
+    else{
+      status = 'Next player: ' + (isXnext ? 'X' : 'O');
+    }
+    
   }
 
   return (
     <>
+      <button onClick={toggleDarkMode} className={`toggle-btn ${darkMode ? 'dark' : 'light'}`}>
+        {darkMode ? 'Light Mode' : 'Dark Mode'}
+      </button>
+
       <h1> TIC TAC TOE BOZO</h1>
       <h2 className='status'> {status} </h2>
       <div className="board-row">
@@ -197,15 +210,17 @@ export default function Board() {
         <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
       </div>
       {showPopup && (
-        <Popup
-          winner={winner}
-          onClose={handlePopupClose}
-          onPlayAgain={handlePlayAgain}
-        />
-      )}
+      <Popup
+        isComputer={isComputer} 
+        winner={winner}
+        onClose={handlePopupClose}
+        onPlayAgain={handlePlayAgain}
+      />
+    )}
+
       <div className='useButtons'>
-        <button type="button" className={`btn btn-light ${isComputer ? 'inactive' : 'active'}`} onClick = {() => setIsComputer(false)}>vs Human</button>
-        <button type="button" className={`btn btn-light ${isComputer ? 'active' : 'inactive'}`} style={{ marginLeft: '10px' }} onClick = {()=> setIsComputer(true)}>vs Computer</button>
+        <button type="button" className={`btn  ${isComputer ? 'inactive' : 'active'}`} onClick = {() => setIsComputer(false)}>vs Human</button>
+        <button type="button" className={`btn  ${isComputer ? 'active' : 'inactive'}`} style={{ marginLeft: '10px' }} onClick = {()=> setIsComputer(true)}>vs Computer</button>
       </div>
       
     </>

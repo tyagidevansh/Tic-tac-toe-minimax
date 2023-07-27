@@ -1,19 +1,21 @@
-/* Apply a grey background to the whole board */
 /* Board.css */
 :root body {
-    background-color: #1a1919fb;
+    background-color: #fffafafb;
   }
-  
-  
+
   /* Add rounded corners to the squares */
   .square {
-    border-radius: 8px;
+    border-radius: 10px;
+    border-color: #0c0b0b;
+    border-width: 2px;
+    width: 100px; /* Increase the width */
+    height: 100px; /* Increase the height */
   }
   
   /* Make the squares black */
   .square {
-    background-color: #000;
-    color: #ffffff; /* Optional: Change the text color to white for better visibility */
+    background-color: #8fa4ac;
+    color: #080707; /* Optional: Change the text color to white for better visibility */
   }
   
   /* Optional: Add some spacing and center the content */
@@ -23,35 +25,30 @@
   }
   
   .status {
-    color: #ffffff;
+    color: #111010;
     text-align: center;
     margin-bottom: 20px;
   }
   
   h1 {
-    color: #ffffff;
+    color: #0c0b0b;
     text-align: center;
-    margin-top: 30px;
+    margin-top: 10px; /* Decrease the margin-top */
     margin-bottom: 10px;
   }
   
-  /* Navbar.css */
-
-/* Navbarcomp.css */
-
-.custom-navbar {
-    margin: 0;
-    padding: 0;
+  h2 {
+    color: #111010;
+    text-align: center;
+    margin-top: 5px; /* Add some margin to move it closer to the top */
   }
-
-h1{
-    color: #ffffff;
-}
-
-h2{
-    color: #ffffff;
-}
-button.active {
+  
+  button.active,
+  button.inactive {
+    margin-top: 20px; /* Add vertical spacing between buttons and squares */
+  }
+  
+  button.active {
     background-color: rgb(18, 18, 20);
     color: white;
   }

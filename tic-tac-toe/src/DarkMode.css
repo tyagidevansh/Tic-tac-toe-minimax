@@ -1,0 +1,26 @@
+/* DarkMode.css */
+body.dark-mode {
+    background-color: #161515fb;
+  }
+  
+  .dark-mode .square {
+    background-color: #000;
+    color: #ffffff;
+  }
+  
+  .dark-mode .status,
+  .dark-mode h1,
+  .dark-mode h2 {
+    color: #ffffff;
+  }
+  
+  .dark-mode button.active {
+    background-color: rgb(18, 18, 20);
+    color: white;
+  }
+  
+  .dark-mode button.inactive {
+    background-color: white;
+    color: black;
+  }
+  
